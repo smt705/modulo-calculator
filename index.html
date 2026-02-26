@@ -1,94 +1,101 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>គណនារកលេខសេស</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            font-family: sans-serif;
-            background-color: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #000000);
-            padding: 20px;
-            text-align: center;
-        }
-        input, button {
-            margin: 10px 0;
-            padding: 10px;
-            width: 80%;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: var(--tg-theme-button-color, #3390ec);
-            color: var(--tg-theme-button-text-color, #ffffff);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .result-box {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
-            display: none; /* Hidden until calculated */
-        }
-        .highlight {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--tg-theme-button-color, #3390ec);
-        }
+      body {
+        font-family: sans-serif;
+        background-color: var(--tg-theme-bg-color, #ffffff);
+        color: var(--tg-theme-text-color, #000000);
+        padding: 20px;
+        text-align: center;
+      }
+      input,
+      button {
+        margin: 10px 0;
+        padding: 10px;
+        width: 80%;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      button {
+        background-color: var(--tg-theme-button-color, #3390ec);
+        color: var(--tg-theme-button-text-color, #ffffff);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .result-box {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
+        display: none; /* Hidden until calculated */
+      }
+      .highlight {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--tg-theme-button-color, #3390ec);
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <h2>គណនារកលេខសេសប្រើឆ្នាំគស</h2>
     <p>សូមបញ្ចូលលេខឆ្នាំគ្រឺសករាជដើម្បីគណនារក សេស (សំណល់)</p>
 
-    <input type="number" id="gregorianYear" placeholder="e.g., 2026" value="2026">
-    
+    <input
+      type="number"
+      id="gregorianYear"
+      placeholder="ឧទាហរ៍ 2026"
+      value="2026"
+    />
+
     <button onclick="calculateMahabote()">គណនារកលេខសេស</button>
 
     <div id="resultBox" class="result-box">
-        <p>Chula Sakarat Year: <span id="csYear"></span></p>
-        <p>Remainder (Mod 7): <br><span id="remainder" class="highlight"></span></p>
+      <p>ឆ្នាំចុល្លសករាជ ៖ <span id="csYear"></span></p>
+      <p>សេស ឬ សំណល់ ៖ <br /><span id="remainder" class="highlight"></span></p>
     </div>
 
     <script>
-        // Initialize the Telegram Web App
-        window.Telegram.WebApp.ready();
+      // Initialize the Telegram Web App
+      window.Telegram.WebApp.ready();
 
-        function calculateMahabote() {
-            const yearInput = document.getElementById('gregorianYear').value;
-            const resultBox = document.getElementById('resultBox');
-            const csYearElement = document.getElementById('csYear');
-            const remainderElement = document.getElementById('remainder');
+      function calculateMahabote() {
+        const yearInput = document.getElementById("gregorianYear").value;
+        const resultBox = document.getElementById("resultBox");
+        const csYearElement = document.getElementById("csYear");
+        const remainderElement = document.getElementById("remainder");
 
-            if (!yearInput) {
-                alert("Please enter a year.");
-                return;
-            }
-
-            const year = parseInt(yearInput, 10);
-
-            if (year < 638) {
-                alert("Year must be 638 or greater to calculate the Chula Sakarat era.");
-                return;
-            }
-
-            // Step 1: Gregorian Year - 638 = Chula Sakarat Year
-            const ans1 = year - 638;
-            
-            // Step 2: Modulo 7
-            const remainder = ans1 % 7;
-
-            // Display results
-            csYearElement.innerText = ans1;
-            remainderElement.innerText = remainder;
-            resultBox.style.display = "block";
+        if (!yearInput) {
+          alert("Please enter a year.");
+          return;
         }
+
+        const year = parseInt(yearInput, 10);
+
+        if (year < 638) {
+          alert(
+            "Year must be 638 or greater to calculate the Chula Sakarat era.",
+          );
+          return;
+        }
+
+        // Step 1: Gregorian Year - 638 = Chula Sakarat Year
+        const ans1 = year - 638;
+
+        // Step 2: Modulo 7
+        const remainder = ans1 % 7;
+
+        // Display results
+        csYearElement.innerText = ans1;
+        remainderElement.innerText = remainder;
+        resultBox.style.display = "block";
+      }
     </script>
-</body>
+  </body>
 </html>
