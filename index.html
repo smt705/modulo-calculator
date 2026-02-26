@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modulo Calculator</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            padding: 20px;
+            text-align: center;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
+            font-size: 16px;
+        }
+        button {
+            background-color: var(--tg-theme-button-color, #3390ec);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Modulo Calculator</h2>
+    <p>Find the remainder of a division.</p>
+
+    <input type="number" id="dividend" placeholder="Number to divide (e.g., 10)">
+    <input type="number" id="divisor" placeholder="Divide by (e.g., 3)">
+    
+    <button onclick="calculateModulo()">Calculate</button>
+
+    <h3 id="result"></h3>
+
+    <script>
+        // Initialize the Telegram Web App
+        window.Telegram.WebApp.ready();
+
+        function calculateModulo() {
+            const dividend = document.getElementById('dividend').value;
+            const divisor = document.getElementById('divisor').value;
+            const resultElement = document.getElementById('result');
+
+            if (!dividend || !divisor) {
+                resultElement.innerText = "Please enter both numbers.";
+                return;
+            }
+
+            if (divisor == 0) {
+                resultElement.innerText = "Cannot divide by zero!";
+                return;
+            }
+
+            // The actual modulo math logic
+            const remainder = dividend % divisor;
+            resultElement.innerText = `Result: ${remainder}`;
+        }
+    </script>
+</body>
+</html>
