@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modulo Calculator</title>
+    <title>Mahabote Calculator</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -18,49 +18,76 @@
             padding: 10px;
             width: 80%;
             font-size: 16px;
+            box-sizing: border-box;
         }
         button {
             background-color: var(--tg-theme-button-color, #3390ec);
             color: var(--tg-theme-button-text-color, #ffffff);
             border: none;
             border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            display: none; /* Hidden until calculated */
+        }
+        .highlight {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--tg-theme-button-color, #3390ec);
         }
     </style>
 </head>
 <body>
 
-    <h2>Modulo Calculator</h2>
-    <p>Find the remainder of a division.</p>
+    <h2>Mahabote Year Calculator</h2>
+    <p>Enter a Gregorian year to find its Mahabote remainder.</p>
 
-    <input type="number" id="dividend" placeholder="Number to divide (e.g., 10)">
-    <input type="number" id="divisor" placeholder="Divide by (e.g., 3)">
+    <input type="number" id="gregorianYear" placeholder="e.g., 2026" value="2026">
     
-    <button onclick="calculateModulo()">Calculate</button>
+    <button onclick="calculateMahabote()">Calculate Remainder</button>
 
-    <h3 id="result"></h3>
+    <div id="resultBox" class="result-box">
+        <p>Chula Sakarat Year: <span id="csYear"></span></p>
+        <p>Remainder (Mod 7): <br><span id="remainder" class="highlight"></span></p>
+    </div>
 
     <script>
         // Initialize the Telegram Web App
         window.Telegram.WebApp.ready();
 
-        function calculateModulo() {
-            const dividend = document.getElementById('dividend').value;
-            const divisor = document.getElementById('divisor').value;
-            const resultElement = document.getElementById('result');
+        function calculateMahabote() {
+            const yearInput = document.getElementById('gregorianYear').value;
+            const resultBox = document.getElementById('resultBox');
+            const csYearElement = document.getElementById('csYear');
+            const remainderElement = document.getElementById('remainder');
 
-            if (!dividend || !divisor) {
-                resultElement.innerText = "Please enter both numbers.";
+            if (!yearInput) {
+                alert("Please enter a year.");
                 return;
             }
 
-            if (divisor == 0) {
-                resultElement.innerText = "Cannot divide by zero!";
+            const year = parseInt(yearInput, 10);
+
+            if (year < 638) {
+                alert("Year must be 638 or greater to calculate the Chula Sakarat era.");
                 return;
             }
 
-            // The actual modulo math logic
-            const remainder = dividend % divisor;
-            resultElement.innerText = `Result: ${remainder}`;
+            // Step 1: Gregorian Year - 638 = Chula Sakarat Year
+            const ans1 = year - 638;
+            
+            // Step 2: Modulo 7
+            const remainder = ans1 % 7;
+
+            // Display results
+            csYearElement.innerText = ans1;
+            remainderElement.innerText = remainder;
+            resultBox.style.display = "block";
         }
     </script>
 </body>
