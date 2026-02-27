@@ -13,7 +13,9 @@
         padding: 20px;
         text-align: center;
       }
-      input,
+      
+      /* Target ONLY the number input, not the checkbox */
+      input[type="number"],
       button {
         margin: 10px 0;
         padding: 10px;
@@ -21,6 +23,7 @@
         font-size: 16px;
         box-sizing: border-box;
       }
+      
       button {
         background-color: var(--tg-theme-button-color, #3390ec);
         color: var(--tg-theme-button-text-color, #ffffff);
@@ -29,13 +32,33 @@
         cursor: pointer;
         font-weight: bold;
       }
+
+      /* New styles to keep the checkbox and text on one line */
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px; /* Space between checkbox and text */
+        margin: 15px 0;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        cursor: pointer;
+      }
+
       .result-box {
         margin-top: 20px;
         padding: 15px;
         border-radius: 8px;
         background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
-        display: none; /* Hidden until calculated */
+        display: none;
       }
+      
       .highlight {
         font-size: 24px;
         font-weight: bold;
@@ -50,19 +73,22 @@
     <input
       type="number"
       id="gregorianYear"
-      placeholder="ឧទាហរ៍ 2026"
+      placeholder="ឧទាហរណ៍ 2026"
       value="2026"
     />
+
+    <label class="checkbox-label">
+      <input type="checkbox" id="birthCheck" /> កើតចន្លោះ ១មករា ដល់៥មេសា
+    </label>
 
     <button onclick="calculateMahabote()">គណនារកលេខសេស</button>
 
     <div id="resultBox" class="result-box">
       <p>ឆ្នាំចុល្លសករាជ ៖ <span id="csYear"></span></p>
-      <p>សេស ឬ សំណល់ ៖ <br /><span id="remainder" class="highlight"></span></p>
+      <p>លទ្ធផល៖ <br /><span id="remainder" class="highlight"></span></p>
     </div>
 
     <script>
-      // Initialize the Telegram Web App
       window.Telegram.WebApp.ready();
 
       function calculateMahabote() {
@@ -79,21 +105,34 @@
         const year = parseInt(yearInput, 10);
 
         if (year < 638) {
-          alert(
-            "Year must be 638 or greater to calculate the Chula Sakarat era.",
-          );
+          alert("Year must be 638 or greater to calculate the Chula Sakarat era.");
           return;
         }
 
-        // Step 1: Gregorian Year - 638 = Chula Sakarat Year
         const ans1 = year - 638;
+        let remainder = ans1 % 7;
 
-        // Step 2: Modulo 7
-        const remainder = ans1 % 7;
+        const isChecked = document.getElementById("birthCheck").checked;
+        if (isChecked) {
+          remainder -= 1;
+        }
 
-        // Display results
+        if (remainder <= 0) {
+          remainder += 7;
+        }
+
+        const results = {
+          1: "សេស១-ដួងអ្នកកំព្រា",
+          2: "សេស២-ដួងអ្នកភាសា",
+          3: "សេស៣-ដួងអ្នកគ្រប់គ្រង",
+          4: "សេស៤-ដួងអ្នកសុខសាន្ត",
+          5: "សេស៥-ដួងអ្នកសេដ្ឋី",
+          6: "សេស៦-ដួងអ្នកវិជ្ជាការ",
+          7: "សេស៧-ដួងមហាសេដ្ឋី",
+        };
+
         csYearElement.innerText = ans1;
-        remainderElement.innerText = remainder;
+        remainderElement.innerText = results[remainder];
         resultBox.style.display = "block";
       }
     </script>
